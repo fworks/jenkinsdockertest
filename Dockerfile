@@ -19,3 +19,16 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 # speed up Maven JVM a bit
 ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 #ENTRYPOINT ["/usr/bin/mvn"]
+
+# 3. Prepare dependencies
+WORKDIR /app
+# Copy the pom.xml into the image to install all dependencies
+COPY pom.xml ./
+
+# Copy the settings.xml into the image
+#COPY settings.xml /root/.m2/
+
+# Run install task so all necessary dependencies are downloaded and cached in
+# the Docker image. We're running through the whole process but disable
+# testing and make sure the command doesn't fail.
+RUN export MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"; mvn verify clean --fail-never -B -DfailIfNoTests=false -Dcheckstyle.skip=true
