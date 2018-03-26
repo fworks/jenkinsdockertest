@@ -25,7 +25,7 @@ WORKDIR /app
 # Copy the pom.xml into the image to install all dependencies
 COPY pom.xml ./
 COPY module1/pom.xml ./module1/
-COPY module1/pom.xml ./module2/
+COPY module2/pom.xml ./module2/
 
 # Copy the settings.xml into the image
 #COPY settings.xml /root/.m2/
